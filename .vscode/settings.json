@@ -1,0 +1,122 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#000000",
+    "titleBar.activeForeground": "#000",
+    "titleBar.inactiveForeground": "#000000CC",
+    "titleBar.activeBackground": "#FFC600",
+    "titleBar.inactiveBackground": "#FFC600CC",
+    "activityBar.activeBorder": "#FFC600",
+    "activityBar.activeBackground": "#FFC600CC"
+  },
+
+  // ===
+  // General Auto Formatting
+  // ===
+
+  // These are all my auto-save configs
+  "editor.formatOnSave": true,
+  // turn it off for JS and JSX, we will do this via eslint
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "[javascriptreact]": {
+    "editor.formatOnSave": false
+  },
+  // tell the ESLint plugin to run on save
+  // "eslint.autoFixOnSave": true,
+  // Optional BUT IMPORTANT: If you have the prettier extension enabled for other languages like CSS and HTML, turn it off for JS since we are doing it through Eslint already
+  "prettier.disableLanguages": [
+    "javascript",
+    "javascriptreact",
+    "vue"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.codeActionsOnSaveTimeout": 1500,
+  "vetur.format.defaultFormatterOptions": {
+    "js-beautify-html": {
+      "wrap_attributes": "force-expand-multiline"
+    },
+    "prettyhtml": {
+      "printWidth": 100,
+      "singleQuote": true,
+      "wrapAttributes": false,
+      "sortAttributes": false,
+      "trailingComma": "es5",
+    },
+    "prettier": {
+      "trailingComma": "es5",
+      "printWidth": 100,
+      "wrapAttributes": true,
+      "singleQuote": true,
+      "tabWidth": 2,
+      "semi": true
+    }
+  },
+
+
+  // ===
+  // Spacing
+  // ===
+
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  "files.trimTrailingWhitespace": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  // ===
+  // Files
+  // ===
+
+  "files.exclude": {
+    "**/*.log": true,
+    "**/*.log*": true,
+    "**/dist": true,
+    "**/coverage": true
+  },
+  "files.associations": {
+    ".markdownlintrc": "jsonc"
+  },
+
+  // ===
+  // HTML
+  // ===
+
+  "html.format.enable": false,
+  "emmet.triggerExpansionOnTab": true,
+  "emmet.includeLanguages": {
+    "vue-html": "html"
+  },
+
+  // ===
+  // JS(ON)
+  // ===
+
+  // "jest.autoEnable": false, // enable if using jest
+  // "jest.enableCodeLens": false, // enable if using jest
+  "javascript.format.enable": false,
+  "json.format.enable": false,
+  // ===
+  // CSS
+  // ===
+  // "stylelint.enable": true, // Enable if ever using stylelint
+  "css.validate": false,
+  "scss.validate": false,
+
+  // ===
+  // MARKDOWN
+  // ===
+
+  "[markdown]": {
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 80
+  },
+  "cSpell.ignoreWords": [
+    "mail",
+    "sendgrid"
+  ]
+}
