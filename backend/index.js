@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
+import { uniqueScrapes } from './lib/utils';
 import { checkProducts } from './lib/scraper';
 import db from './lib/db';
 import './lib/cron';
@@ -32,10 +33,17 @@ app.get('/scrape', async (_, res, next) => {
 });
 
 app.get('/data', async (req, res, next) => {
+  //* get the scrape data from db
   const { data } = db.value();
-  console.log('data:', data);
+  const uniqueData = uniqueScrapes(data);
 
-  res.json(data);
+  // uniqueData.forEach(item => {
+  //   console.log(new Date(item.date).toLocaleDateString());
+  //   console.log(new Date(item.date));
+  // });
+
+  //* respond with json
+  res.json({ uniqueData, data });
 });
 
 app.listen(2012, () => {
