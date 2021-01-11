@@ -41,9 +41,18 @@ app.get('/data', async (req, res, next) => {
   //   console.log(new Date(item.date).toLocaleDateString());
   //   console.log(new Date(item.date));
   // });
+  // emailAlert(data);
 
   //* respond with json
   res.json({ uniqueData, data });
+});
+
+app.get('/reset-db', (req, res, next) => {
+  console.log(`⚠️  CLEANING DB DATA!!`);
+  db.set('data', []).write();
+  console.log('✅ DONE!');
+
+  return res.status(200).json({ message: 'DB DATA CLEANED' });
 });
 
 app.listen(2012, () => {

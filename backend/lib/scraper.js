@@ -9,9 +9,15 @@ require('dotenv').config();
 function emailBodySetup(product) {
   return `<div>
   <p>======================</p>
-  <p>${product.productName} is possibly in stock at price: ${product.priceString}</p>
+  <p>${product.productName} is possibly in stock at price: ${
+    product.priceString
+  }</p>
   <p>URL: <a href="${product.productURL}">${product.productURL}</a></p>
-  <p>Check to see if stores nearby have it!</p>
+  ${
+    product.checkStoresOpt
+      ? '<p>Check to see if stores nearby have it!</p>'
+      : ''
+  }
   </div>`;
 }
 
@@ -21,7 +27,7 @@ export async function emailAlert(data) {
     const uniqueData = uniqueScrapes(data);
 
     const inStockProducts = uniqueData.filter(product =>
-      product.inStock ? product : false
+      product.inStock || product.checkStoresOpt ? product : false
     );
 
     //* Send email if there are in stock products
@@ -55,6 +61,7 @@ export async function checkStock(html) {
   const productName = $('h1.name')
     .text()
     .trim();
+  // console.log('productName:', productName);
 
   $('.product-details__id span').remove();
   const productID = $('.product-details__id')
@@ -81,6 +88,11 @@ export async function checkStock(html) {
   const priceNumber = parseFloat(priceString.replace('$', ''));
   // console.log('priceNumber:', priceNumber);
 
+  const checkStoresOpt = $(
+    '.check-nearby-stores a.js-pickup-in-store-button'
+  ).html();
+  // console.log('checkStoresOpt:', checkStoresOpt);
+
   return {
     date: Date.now(),
     productName,
@@ -92,6 +104,8 @@ export async function checkStock(html) {
     inStock: inStockBtn.length !== 0,
     priceString: priceString.trim(),
     priceNumber,
+    // checkStoresOpt: checkStoresOpt ? checkStoresOpt.trim() : false,
+    checkStoresOpt: !!checkStoresOpt,
   };
 }
 
