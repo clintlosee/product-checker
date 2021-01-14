@@ -1,7 +1,7 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 import db from './db';
-import { sendEmail, uniqueScrapes } from './utils';
+import { sendEmail, uniqueScrapes, runStockCheck } from './utils';
 import urls from '../data/urls';
 
 require('dotenv').config();
@@ -93,6 +93,13 @@ export async function checkStock(html) {
   ).html();
   // console.log('checkStoresOpt:', checkStoresOpt);
 
+  let stockCheck = null;
+  // const stockCheck = checkStoresOpt ? await runStockCheck(productURL, productName) : null;
+  if (checkStoresOpt) {
+    stockCheck = await runStockCheck(productURL);
+  }
+  // console.log('stockCheck:', productName, stockCheck);
+
   return {
     date: Date.now(),
     productName,
@@ -106,6 +113,7 @@ export async function checkStock(html) {
     priceNumber,
     // checkStoresOpt: checkStoresOpt ? checkStoresOpt.trim() : false,
     checkStoresOpt: !!checkStoresOpt,
+    stockCheck,
   };
 }
 
@@ -128,6 +136,6 @@ export async function runCron() {
       .write();
   });
 
-  emailAlert(result);
+  // emailAlert(result); //* turn on for emails to be sent
   console.log('✅ DONE!');
 }

@@ -4,7 +4,9 @@ import cors from 'cors';
 import { uniqueScrapes } from './lib/utils';
 import { checkProducts } from './lib/scraper';
 import db from './lib/db';
-import './lib/cron';
+import './lib/cron'; //* turn on for cron jobs
+
+process.setMaxListeners(0);
 
 const app = express();
 app.use(cors());
@@ -45,6 +47,21 @@ app.get('/data', async (req, res, next) => {
 
   //* respond with json
   res.json({ uniqueData, data });
+});
+
+app.get('/check-stores', async (req, res, next) => {
+  //* get the scrape data from db
+  const { data } = db.value();
+  const uniqueData = uniqueScrapes(data);
+
+  //* testing out stock checker
+  // const url =
+  //   'https://www.sportsmans.com/shooting-gear-gun-supplies/ammunition-ammo-for-hunting-shooting-sports/rifle-ammo-hunting-shooting-sports/sig-sauer-elite-performance-300-aac-blackout-125gr-fmj-rifle-ammo-20-rounds/p/1653080';
+  // const inStock = await run(url);
+  // console.log('inStock route:', inStock);
+
+  //* respond with json
+  res.json({ uniqueData });
 });
 
 app.get('/reset-db', (req, res, next) => {
