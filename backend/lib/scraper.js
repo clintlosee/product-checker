@@ -1,46 +1,48 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 import db from './db';
-import { sendEmail, uniqueScrapes, runStockCheck } from './utils';
+import {
+  sendEmail,
+  emailBodySetup,
+  uniqueScrapes,
+  runStockCheck,
+} from './utils';
 import urls from '../data/urls';
 
 require('dotenv').config();
-
-function emailBodySetup(product) {
-  return `<div>
-  <p>======================</p>
-  <p>${product.productName} is possibly in stock at price: ${
-    product.priceString
-  }</p>
-  <p>URL: <a href="${product.productURL}">${product.productURL}</a></p>
-  ${
-    product.checkStoresOpt
-      ? '<p>Check to see if stores nearby have it!</p>'
-      : ''
-  }
-  </div>`;
-}
 
 export async function emailAlert(data) {
   //* Look at the data and determine email sending.
   try {
     const uniqueData = uniqueScrapes(data);
+    const noProductsEmailText = `Sorry, no products were found in stock. Check again later.`;
 
     const inStockProducts = uniqueData.filter(product =>
       product.inStock || product.checkStoresOpt ? product : false
     );
 
-    //* Send email if there are in stock products
-    if (inStockProducts.length > 0) {
+    const inStockProductsUT = uniqueData.filter(product =>
+      product.inStock ||
+      (product.checkStoresOpt && product.stockCheck.inStockUT.length > 0)
+        ? product
+        : false
+    );
+
+    //* Send email if there are any stock products
+    // if (inStockProducts.length > 0) {
+    //* Send email if there are in stock products in UT
+    if (inStockProductsUT.length > 0) {
       const emailText = inStockProducts
         .map(product => emailBodySetup(product))
         .join('');
 
-      await sendEmail(`Product(s) Possibly In Stock`, emailText);
+      await sendEmail(`Product(s) In Stock`, emailText);
+    } else {
+      await sendEmail(`No Products In Stock In UT`, noProductsEmailText);
     }
   } catch (error) {
     console.log('ERROR!!!!', error);
-    // await sendEmail('Product Checker Error', error.message);
+    await sendEmail('Product Checker Error', error.message);
     throw error;
   }
 }
@@ -136,6 +138,6 @@ export async function runCron() {
       .write();
   });
 
-  // emailAlert(result); //* turn on for emails to be sent
+  emailAlert(result); //* turn on for emails to be sent
   console.log('✅ DONE!');
 }

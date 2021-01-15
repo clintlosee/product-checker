@@ -11,10 +11,11 @@ process.setMaxListeners(0);
 const app = express();
 app.use(cors());
 
-async function go() {
-  await checkProducts();
-}
-go();
+//* Don't need to run check at startup
+// async function go() {
+//   await checkProducts();
+// }
+// go();
 
 app.get('/', (_, res) => {
   res.json({ message: 'Nothing to see here... 🙁' });
@@ -38,12 +39,6 @@ app.get('/data', async (req, res, next) => {
   //* get the scrape data from db
   const { data } = db.value();
   const uniqueData = uniqueScrapes(data);
-
-  // uniqueData.forEach(item => {
-  //   console.log(new Date(item.date).toLocaleDateString());
-  //   console.log(new Date(item.date));
-  // });
-  // emailAlert(data);
 
   //* respond with json
   res.json({ uniqueData, data });

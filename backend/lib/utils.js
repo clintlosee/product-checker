@@ -33,6 +33,31 @@ export function sendEmail(subject, body) {
   return sgMail.send(email);
 }
 
+export function emailBodySetup(product) {
+  const { inStock = [], inStockUT = [] } = product.stockCheck;
+  const inStockListUT = inStockUT
+    .map(item => `<li>${item.toUpperCase()}</li>`)
+    .join(' ');
+  const inStockList = inStock
+    .map(item => `<li>${item.toUpperCase()}</li>`)
+    .join(' ');
+
+  return `<div>
+    <p>======================</p>
+    <p><b>${product.productName}</b> is in stock in UT!</p>
+    <p>PRICE: ${product.priceString}</p>
+    <h3>UT Stores:</h3>
+    <ul>
+      ${inStockListUT}
+    </ul>
+    <h4>All Stores:</h4>
+    <ul>
+      ${inStockList.length > 0 ? inStockList : 'N/A'}
+    </ul>
+    <p>🔗 URL: <a href="${product.productURL}">${product.productURL}</a></p>
+  </div>`;
+}
+
 export async function runStockCheck(url) {
   console.log('✅ STARTING STOCK CHECK...');
   const browser = await puppeteer.launch({ headless: true });
