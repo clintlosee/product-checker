@@ -85,8 +85,8 @@ export async function runStockCheck(url) {
   const filteredStores = storeStockList.filter(item => item.includes('UT'));
 
   const inStock = storeStockList.filter(store => store.includes('in stock'));
-  const inStockUT = filteredStores.filter(store =>
-    store.includes('pick up in')
+  const inStockUT = filteredStores.filter(
+    store => store.includes('pick up in') || store.includes('in stock')
   );
 
   console.log('❌ ENDING STOCK CHECK');
