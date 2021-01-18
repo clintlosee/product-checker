@@ -59,6 +59,11 @@ app.get('/check-stores', async (req, res, next) => {
   res.json({ uniqueData });
 });
 
+app.post('/add-url', (req, res, next) => {
+  console.log('reqQuery:', req.query);
+  res.status(201).send({ message: 'All Good', query: req.query });
+});
+
 app.get('/reset-db', (req, res, next) => {
   console.log(`⚠️  CLEANING DB DATA!!`);
   db.set('data', []).write();

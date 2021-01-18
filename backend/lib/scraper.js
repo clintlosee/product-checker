@@ -17,10 +17,15 @@ export async function emailAlert(data) {
     const uniqueData = uniqueScrapes(data);
     const noProductsEmailText = `Sorry, no products were found in stock. Check again later.`;
 
-    const inStockProducts = uniqueData.filter(product =>
-      product.inStock || product.checkStoresOpt ? product : false
-    );
+    //* Filter for any in stock product
+    // const inStockProducts = uniqueData.filter(product =>
+    //   product.inStock ||
+    //   (product.checkStoresOpt && product.stockCheck.inStock.length > 0)
+    //     ? product
+    //     : false
+    // );
 
+    //* Filter for any in stock in UT product
     const inStockProductsUT = uniqueData.filter(product =>
       product.inStock ||
       (product.checkStoresOpt && product.stockCheck.inStockUT.length > 0)
@@ -32,7 +37,7 @@ export async function emailAlert(data) {
     // if (inStockProducts.length > 0) {
     //* Send email if there are in stock products in UT
     if (inStockProductsUT.length > 0) {
-      const emailText = inStockProducts
+      const emailText = inStockProductsUT
         .map(product => emailBodySetup(product))
         .join('');
 
