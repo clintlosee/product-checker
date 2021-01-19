@@ -1,5 +1,5 @@
 {
-  "name": "amazon-tracker",
+  "name": "product-stock-checker-sw",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
