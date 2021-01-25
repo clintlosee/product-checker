@@ -53,8 +53,10 @@ export async function emailAlert(data) {
 }
 
 export async function getHTML(url) {
-  const { data: html } = await axios.get(url);
-  return html;
+  if (url) {
+    const { data: html } = await axios.get(url);
+    return html;
+  }
 }
 
 export async function checkStock(html) {
@@ -92,7 +94,9 @@ export async function checkStock(html) {
     .trim();
   // console.log('priceString:', priceString);
 
-  const priceNumber = parseFloat(priceString.replace('$', ''));
+  const priceNumber = priceString
+    ? parseFloat(priceString.replace('$', ''))
+    : 'N/A';
   // console.log('priceNumber:', priceNumber);
 
   const checkStoresOpt = $(
@@ -126,8 +130,10 @@ export async function checkStock(html) {
 
 export async function getData(url) {
   const html = await getHTML(url);
-  const check = await checkStock(html);
-  return check;
+  if (html) {
+    const check = await checkStock(html);
+    return check;
+  }
 }
 
 export async function checkProducts() {
