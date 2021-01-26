@@ -62,8 +62,27 @@ export async function runStockCheck(url) {
   console.log('✅ STARTING STOCK CHECK...');
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
+  await page.setRequestInterception(true);
 
-  await page.goto(url);
+  page.on('request', req => {
+    if (
+      req.resourceType() === 'stylesheet' ||
+      req.resourceType() === 'font' ||
+      // req.resourceType() === 'script' ||
+      req.resourceType() === 'fetch' ||
+      req.resourceType() === 'image'
+    ) {
+      req.abort();
+    } else {
+      req.continue();
+    }
+  });
+
+  await page.goto(url, {
+    waitUntil: 'networkidle0',
+    timeout: 0,
+  });
+  page.setDefaultNavigationTimeout(90000);
 
   const checkNearbyStores =
     'div.smw-delivery-mode-item-label.smw-nongrid-only > span.check-nearby-stores a';
@@ -114,7 +133,8 @@ export async function runStockCheck(url) {
     store => store.includes('pick up in') || store.includes('in stock')
   );
 
-  console.log('❌ ENDING STOCK CHECK');
+  console.log('❌ ENDING STOCK CHECK', url);
+  browser.close();
 
   return {
     inStock,
