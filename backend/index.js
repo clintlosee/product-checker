@@ -18,7 +18,7 @@ app.use(cors());
 // go();
 
 app.get('/', (_, res) => {
-  res.json({ message: 'Nothing to see here... 🙁' });
+  res.json({ message: 'Working, but nothing to see here... 🙁' });
 });
 
 app.get('/scrape', async (_, res, next) => {
