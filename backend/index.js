@@ -6,6 +6,8 @@ import { checkProducts } from './lib/scraper';
 import db from './lib/db';
 import './lib/cron'; //* turn on for cron jobs
 
+const port = process.env.PORT || 8080;
+
 process.setMaxListeners(0);
 
 const app = express();
@@ -72,6 +74,6 @@ app.get('/reset-db', (req, res, next) => {
   return res.status(200).json({ message: 'DB DATA CLEANED' });
 });
 
-app.listen(2012, () => {
-  console.log(`App running on port 2012`);
+app.listen(port, () => {
+  console.log(`App running on port ${port}`);
 });
