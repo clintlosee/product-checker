@@ -62,7 +62,7 @@ export async function runStockCheck(url) {
   console.log('✅ STARTING STOCK CHECK...');
   const browser = await puppeteer.launch({
     headless: true,
-    args: ['--no-sandbox'],
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
   await page.setRequestInterception(true);
