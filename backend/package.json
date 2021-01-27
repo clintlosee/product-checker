@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "dev": "nodemon -r esm index.js --ignore db.json",
-    "start": "nodemon -r esm index.js --ignore db.json"
+    "start": "node -r esm index.js --ignore db.json"
   },
   "author": "Clint Losee <clint.losee@gmail.com> (clintlosee.me)",
   "license": "MIT",
