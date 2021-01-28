@@ -3,13 +3,13 @@ import { runCron } from './scraper';
 
 //* Cron schedules
 // const everyMinute = '* * * * *';
-// const everyThreeMinutes = '*/3 * * * *';
+const everyThreeMinutes = '*/3 * * * *';
 // const everyThirtyMinutes = '0,30 * * * *';
 // const everyThirtyBetweenFiveAndTen = '*/30 05-22 * * *';
 const everyHourBetweenSixAndTen = '00 06-22 * * *';
 
 //* To run every minute
-cron.schedule(everyHourBetweenSixAndTen, () => {
+cron.schedule(everyThreeMinutes, () => {
   console.log('⏲️  RUNNING THE CRON');
   runCron();
 });
