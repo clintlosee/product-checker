@@ -6,6 +6,9 @@ require('dotenv').config();
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+//* Heroku addon for puppeteer to work
+//* https://github.com/jontewks/puppeteer-heroku-buildpack
+
 export function uniqueScrapes(data) {
   //* filter for unique productIDs
   const uniqueIDs = [...new Set(data.map(item => item.productID))];
